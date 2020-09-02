@@ -14,23 +14,16 @@ jobs:
           - v1-dependencies-{{ checksum "package.json" }}
           - v1-dependencies-
 
-      - run: yarn install
-
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-        
-      - run: 
-          name: Install JUnit converage reporter
+      - run:
+          name: Install JUnit coverage reporter
           command: yarn add --dev jest-junit
       - run:
-          name: Run tests with JUnit as reporters=default --reporters=jest-junit
-          command: npx jest --ci --runInBand --results=default --reporters=jest-junit
+          name: Run tests with JUnit as reporter
+          command: npx jest --ci --runInBand --reporters=default --reporters=jest-junit
           environment:
             JEST_JUNIT_OUTPUT_DIR: "./junit/test-results.xml"
-            when: always
+          when: always
       - store_test_results:
-        path: ./junit
+          path: ./junit
       - store_artifacts:
-          pth: ./junit
+          path: ./junit
